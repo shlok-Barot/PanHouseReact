@@ -12,6 +12,7 @@ import Icons from "views/pages/Icons";
 import Profile from "views/pages/Profile";
 import CustomerReport from "views/pages/CustomerReport";
 import CreditAndDebit from "views/pages/CreditAndDebit";
+import DemoTest from "views/pages/DemoTest";
 
 export class layout extends Component {
   componentDidUpdate(e) {
@@ -59,6 +60,7 @@ export class layout extends Component {
             <Route path={"/admin/user-profile"} component={Profile} />
             <Route path={"/admin/customerReport"} component={CustomerReport} />
             <Route path={"/admin/credit-debit"} component={CreditAndDebit} />
+            <Route path={"/admin/DemoTest"} component={DemoTest} />
           </Switch>
           <Container fluid>
             {children}

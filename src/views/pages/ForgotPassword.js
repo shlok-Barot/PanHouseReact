@@ -1,6 +1,5 @@
 import React from "react";
-// import axios from "axios";
-// import config from "./../../helpers/config";
+import axios from "axios";
 import {
   Button,
   Card,
@@ -14,19 +13,20 @@ import {
   Row,
   Col,
 } from "reactstrap";
-// import { encryption } from "helpers/encryption";
 import {
   NotificationContainer,
-//   NotificationManager,
+  NotificationManager,
 } from "react-notifications";
 import { Link } from "react-router-dom";
+import { authHeader } from "helpers/authHeader";
+import config from "helpers/config";
 
 class ForgotPassword extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      emailId: "",
+      emailID: "",
       Emailvalidation: "",
     };
   }
@@ -35,9 +35,33 @@ class ForgotPassword extends React.Component {
   /// handle forgotpassword User
   handleForgotPassword = (e) => {
     e.preventDefault();
-    var self = this;
+    let self = this;
     if (this.state.emailID !== "") {
-      alert("API CALL");
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Account/ForgetPassword",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        params: {
+          EmailId: this.state.emailID,
+        },
+      })
+        .then((res) => {
+          let status = res.data.message;
+          if (status === "Success") {
+            NotificationManager.success("Please check your mail.", "", 2000);
+            self.setState({
+              emailID: "",
+            });
+          } else {
+            NotificationManager.error(status, "", 2000);
+          }
+        })
+        .catch((res) => {
+          console.log(res);
+        });
     } else {
       self.setState({
         Emailvalidation: "Please Enter Email ID.",
@@ -71,7 +95,7 @@ class ForgotPassword extends React.Component {
                     <Input
                       placeholder="Enter Your Email ID"
                       type="email"
-                    //   autoComplete="new-email"
+                      //   autoComplete="new-email"
                       name="emailID"
                       value={this.state.emailID}
                       onChange={this.handleOnChange}
@@ -89,16 +113,16 @@ class ForgotPassword extends React.Component {
                     SUBMIT
                   </Button>
                 </div>
-                <Row>
-                  <Col xs="12">
-                    <p className="text-muted txt-center">
-                      <Link to="/auth/login" className="forgotPass">
-                        TRY LOGIN AGAIN
-                      </Link>
-                    </p>
-                  </Col>
-                </Row>
               </Form>
+              <Row>
+                <Col xs="12">
+                  <p className="text-muted txt-center">
+                    <Link to="/auth/login" className="forgotPass">
+                      TRY LOGIN AGAIN
+                    </Link>
+                  </p>
+                </Col>
+              </Row>
             </CardBody>
           </Card>
           <NotificationContainer />
