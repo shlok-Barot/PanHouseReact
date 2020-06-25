@@ -59,7 +59,7 @@ export class layout extends Component {
             <Route path={"/admin/icons"} component={Icons} />
             <Route path={"/admin/user-profile"} component={Profile} />
             <Route path={"/admin/customerReport"} component={CustomerReport} />
-            <Route path={"/admin/credit-debit"} component={CreditAndDebit} />
+            <Route path={"/admin/credit-debit"} component={CreditAndDebit} /> 
             <Route path={"/admin/DemoTest"} component={DemoTest} />
           </Switch>
           <Container fluid>

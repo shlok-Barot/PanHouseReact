@@ -13,8 +13,8 @@ import {
   Col,
 } from "reactstrap";
 import { Radio } from "antd";
-import { DatePicker } from "antd";
-import moment from "moment";
+// import { DatePicker } from "antd";
+// import moment from "moment";
 import Header from "components/Headers/Header.js";
 
 class addCustomer extends React.Component {
@@ -27,7 +27,7 @@ class addCustomer extends React.Component {
       mobileNo: "",
       genderID: 1,
       custAddress: "",
-      Dob: "",
+      // Dob: "",
       fullNameValidation: "",
       mobileNoValidation: "",
     };
@@ -42,7 +42,6 @@ class addCustomer extends React.Component {
         this.state.EmailId,
         this.state.mobileNo,
         this.state.genderID,
-        this.state.Dob,
         this.state.custAddress
       );
     } else {
@@ -57,18 +56,18 @@ class addCustomer extends React.Component {
   genderSelect = (e) => {
     this.setState({
       genderID: e.target.value,
-    });
+    }); 
   };
   //hanlde DOB change
-  handleDobChange = (date) => {
-    this.setState({
-      Dob: date,
-    });
-  };
+  // handleDobChange = (date) => {
+  //   this.setState({
+  //     Dob: date,
+  //   });
+  // };
   /// disabled future date
-  DisabledFutureDate = (current) => {
-    return current && current > moment().startOf("day");
-  };
+  // DisabledFutureDate = (current) => {
+  //   return current && current > moment().startOf("day");
+  // };
   /// handle Input onchange
   handleInputOnchange = (e) => {
     var name = e.target.name;
@@ -187,7 +186,7 @@ class addCustomer extends React.Component {
 
                     <div className="pl-lg-4">
                       <Row>
-                        <Col md="6">
+                        {/* <Col md="6">
                           <FormGroup>
                             <label className="form-control-label">DOB</label>
                             <DatePicker
@@ -200,8 +199,8 @@ class addCustomer extends React.Component {
                               onChange={this.handleDobChange}
                             />
                           </FormGroup>
-                        </Col>
-                        <Col md="6">
+                        </Col> */}
+                        <Col md="12">
                           <FormGroup>
                             <label className="form-control-label">
                               Address
