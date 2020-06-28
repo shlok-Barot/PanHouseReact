@@ -1,6 +1,4 @@
 import React from "react";
-import axios from "axios";
-import config from "./../../helpers/config";
 import {
   Button,
   Card,
@@ -14,11 +12,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import { encryption } from "helpers/encryption";
-import {
-  NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+import { notification } from "antd";
 import { Link } from "react-router-dom";
 import AuthService from "views/APIService/AuthService";
 
@@ -38,10 +32,9 @@ class Login extends React.Component {
   /// handle Authenticate User
   handleAuthenticateUser(e) {
     e.preventDefault();
-    var self=this;
+    var self = this;
     this.Auth.AuthLogin(this.state.emailId, this.state.password)
       .then(function (res) {
-        debugger
         var message = res.data.message;
         var data = res.data.responseData.token;
         if (message === "Valid Login") {
@@ -50,56 +43,18 @@ class Login extends React.Component {
             self.props.history.push("/admin/dashboard");
           }, 400);
         } else {
-          NotificationManager.error(
-            "Username or password is invalid.",
-            "",
-            2000
-          );
+          notification.error({
+            message: "Error",
+            description: "Username or password is invalid.",
+            duration: 3,
+          });
         }
       })
       .catch((res) => {
         console.log(res);
       });
   }
-  // handleAuthenticateUser(e) {
-  //   debugger;
-  //   e.preventDefault();
-  //   let self = this;
-  //   var X_Authorized_userId = encryption(this.state.emailId, "enc");
 
-  //   let X_Authorized_password = encryption(this.state.password, "enc");
-  //   let X_Authorized_Domainname = encryption(window.location.origin, "enc");
-  //   axios({
-  //     method: "post",
-  //     url: config.apiUrl + "/Account/authenticateUser",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       "Access-Control-Allow-Origin": "*",
-  //       "X-Authorized-userId": X_Authorized_userId,
-  //       "X-Authorized-password": X_Authorized_password,
-  //       "X-Authorized-Domainname": X_Authorized_Domainname,
-  //     },
-  //   })
-  // .then(function (res) {
-  //   var message = res.data.message;
-  //   var data = res.data.responseData.token;
-  //   if (message === "Valid Login") {
-  //     window.localStorage.setItem("token", data);
-  //     setTimeout(() => {
-  //       self.props.history.push("/admin/dashboard");
-  //     }, 400);
-  //   } else {
-  //     NotificationManager.error(
-  //       "Username or password is invalid.",
-  //       "",
-  //       2000
-  //     );
-  //   }
-  // })
-  // .catch((res) => {
-  //   console.log(res);
-  // });
-  // }
   /// --------------API Function End--------------------
   /// handle Onchage
   handleOnChange = (e) => {
@@ -152,7 +107,6 @@ class Login extends React.Component {
                     />
                   </InputGroup>
                 </FormGroup>
-
                 <div className="text-center">
                   <Button className="my-4" color="primary" type="submit">
                     LOGIN
@@ -170,7 +124,6 @@ class Login extends React.Component {
               </Form>
             </CardBody>
           </Card>
-          <NotificationContainer />
         </Col>
       </>
     );

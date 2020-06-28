@@ -1,9 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
 
 function DemoTest(props) {
-  console.log(props);
-
   return (
     <div>
       <h2>Test User Page</h2>

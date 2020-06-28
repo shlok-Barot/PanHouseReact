@@ -30,14 +30,12 @@ class AdminNavbar extends React.Component {
 
   /// handle Log Out system
   handleLogOutSystem() {
-    alert("Logout API Call")
     axios({
       method: "post",
       url: config.apiUrl + "/Account/Logout",
       headers: authHeader(),
     })
       .then(function (res) {
-        debugger;
         var status = res.data.status;
         if (status === true) {
           localStorage.clear();

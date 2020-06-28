@@ -1,21 +1,19 @@
 import React from "react";
-// reactstrap components
 import {
   Button,
   Card,
   CardHeader,
   CardBody,
   FormGroup,
-  Form,
   Input,
   Container,
   Row,
   Col,
+  Form
 } from "reactstrap";
-import { Radio } from "antd";
-// import { DatePicker } from "antd";
-// import moment from "moment";
+import { Radio, notification } from "antd";
 import Header from "components/Headers/Header.js";
+import CustService from "views/APIService/CustService";
 
 class addCustomer extends React.Component {
   constructor(props) {
@@ -27,23 +25,48 @@ class addCustomer extends React.Component {
       mobileNo: "",
       genderID: 1,
       custAddress: "",
-      // Dob: "",
       fullNameValidation: "",
       mobileNoValidation: "",
     };
+    this.Cust = new CustService();
   }
   /// -----------------API function start-------------------------
   /// handle Submit tcustomer data
-  handleSubmitCustomerData() {
+  handleSubmitCustomerData(e) {
+    e.preventDefault();
     var self = this;
     if (this.state.customerFullName !== "" && this.state.mobileNo !== null) {
-      console.log(
+      this.Cust.AddCustomerDetails(
         this.state.customerFullName,
         this.state.EmailId,
         this.state.mobileNo,
         this.state.genderID,
         this.state.custAddress
-      );
+      )
+        .then((res) => {
+          let status = res.data.message;
+          if (status === "Success") {
+            notification.success({
+              message: "Customer Added",
+              description: "Record Added Successfully.",
+              duration: 3,
+            });
+            setTimeout(function () {
+              self.props.history.push({
+                pathname: "/admin/customerList",
+              });
+            }, 500);
+          } else {
+            notification.error({
+              message: "Error",
+              description: "Customer Not Added.",
+              duration: 3,
+            });
+          }
+        })
+        .catch((res) => {
+          console.log(res);
+        });
     } else {
       self.setState({
         fullNameValidation: "Please Enter Name.",
@@ -56,18 +79,9 @@ class addCustomer extends React.Component {
   genderSelect = (e) => {
     this.setState({
       genderID: e.target.value,
-    }); 
+    });
   };
-  //hanlde DOB change
-  // handleDobChange = (date) => {
-  //   this.setState({
-  //     Dob: date,
-  //   });
-  // };
-  /// disabled future date
-  // DisabledFutureDate = (current) => {
-  //   return current && current > moment().startOf("day");
-  // };
+
   /// handle Input onchange
   handleInputOnchange = (e) => {
     var name = e.target.name;
@@ -98,7 +112,10 @@ class addCustomer extends React.Component {
                   </Row>
                 </CardHeader>
                 <CardBody>
-                  <Form>
+                  <Form
+                    name="form"
+                    onSubmit={this.handleSubmitCustomerData.bind(this)}
+                  >
                     <h6 className="heading-small text-muted mb-4">
                       Customer Information
                     </h6>
@@ -186,20 +203,6 @@ class addCustomer extends React.Component {
 
                     <div className="pl-lg-4">
                       <Row>
-                        {/* <Col md="6">
-                          <FormGroup>
-                            <label className="form-control-label">DOB</label>
-                            <DatePicker
-                              className="dobpicker"
-                              format="DD-MM-YYYY"
-                              disabledDate={this.DisabledFutureDate}
-                              placeholder="Date Of Birth"
-                              showToday={false}
-                              value={this.state.Dob}
-                              onChange={this.handleDobChange}
-                            />
-                          </FormGroup>
-                        </Col> */}
                         <Col md="12">
                           <FormGroup>
                             <label className="form-control-label">
@@ -224,7 +227,8 @@ class addCustomer extends React.Component {
                       <FormGroup className="txt-center">
                         <Button
                           color="primary"
-                          onClick={this.handleSubmitCustomerData.bind(this)}
+                          className="btnWidth"
+                          type="submit"
                         >
                           Submit
                         </Button>

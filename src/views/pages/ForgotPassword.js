@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import {
   Button,
   Card,
@@ -13,13 +12,9 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import {
-  NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+import { notification } from "antd";
 import { Link } from "react-router-dom";
-import { authHeader } from "helpers/authHeader";
-import config from "helpers/config";
+import AuthService from "views/APIService/AuthService";
 
 class ForgotPassword extends React.Component {
   constructor(props) {
@@ -29,6 +24,7 @@ class ForgotPassword extends React.Component {
       emailID: "",
       Emailvalidation: "",
     };
+    this.Auth = new AuthService();
   }
 
   /// --------------API Function Start------------------
@@ -37,26 +33,24 @@ class ForgotPassword extends React.Component {
     e.preventDefault();
     let self = this;
     if (this.state.emailID !== "") {
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Account/ForgetPassword",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        params: {
-          EmailId: this.state.emailID,
-        },
-      })
+      this.Auth.UserForgotPassword(this.state.emailID)
         .then((res) => {
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Please check your mail.", "", 2000);
+            notification.success({
+              message: "Success",
+              description: "Please check your mail.",
+              duration: 3,
+            });
             self.setState({
               emailID: "",
             });
           } else {
-            NotificationManager.error(status, "", 2000);
+            notification.error({
+              message: "Error",
+              description: status,
+              duration: 3,
+            });
           }
         })
         .catch((res) => {
@@ -125,7 +119,6 @@ class ForgotPassword extends React.Component {
               </Row>
             </CardBody>
           </Card>
-          <NotificationContainer />
         </Col>
       </>
     );

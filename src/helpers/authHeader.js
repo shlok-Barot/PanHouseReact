@@ -12,10 +12,10 @@ export function authHeader(token = "token") {
     var _token = window.localStorage.getItem("token");
     if (_token === null) {
       localStorage.clear();
-      window.location.href = "/";
+      window.location.href = "/auth/login";
     } else {
       return {
-        "X-Authorized-Token": _token,
+        "X-Authorized-Header": _token,
         "Content-Type": "application/json"
       };
     }

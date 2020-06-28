@@ -23,17 +23,16 @@ class CreditAndDebit extends Component {
       SelTabs: "Credit",
       CustNameAutoComplete: [],
       customerNameItem: {},
-      autoCustomerID: 0,
       creditAmount: "",
       debitAmount: "",
       creditDetails: "",
       debitDetails: "",
+      selectedCustomer: 0,   
     };
   }
   /// --------------API Call start------------------------
   /// handle get Customer name
   handleGetCustomerName(field, e) {
-    debugger;
     // let self = this;
     let SearchData = this.state.custData;
     SearchData[field] = e.target.value;
@@ -43,6 +42,8 @@ class CreditAndDebit extends Component {
       CustNameAutoComplete: data,
     });
   }
+
+  
   /// --------------API Call End--------------------------
 
   /// handle Selected Data
@@ -55,7 +56,7 @@ class CreditAndDebit extends Component {
 
     this.setState({
       SearchData,
-      autoCustomerID: custId,
+      selectedCustomer: custId,
     });
   }
   /// handle Amount change
@@ -72,7 +73,8 @@ class CreditAndDebit extends Component {
   handleInputOnchange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
-  render() {
+
+   render() {
     return (
       <>
         <Header />
@@ -141,6 +143,7 @@ class CreditAndDebit extends Component {
                                       this.state.customerNameItem["customer"]
                                     }
                                   />
+                                  
                                 </FormGroup>
                               </Col>
                             </Row>

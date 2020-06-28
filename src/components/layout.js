@@ -15,6 +15,25 @@ import CreditAndDebit from "views/pages/CreditAndDebit";
 import DemoTest from "views/pages/DemoTest";
 
 export class layout extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loginAccess: false,
+    };
+  }
+
+  componentDidMount() {
+    var _token = window.localStorage.getItem("token");
+    if (_token === null) {
+      window.location.href = "/auth/login";
+    } else {
+      this.setState({
+        loginAccess: true,
+      });
+    }
+  }
+
   componentDidUpdate(e) {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -52,16 +71,21 @@ export class layout extends Component {
             {...this.props}
             brandText={this.getBrandText(this.props.location.pathname)}
           />
-          <Switch>
-            <Route path={"/admin/dashboard"} component={dashboard} />
-            <Route path={"/admin/addCustomer"} component={addCustomer} />
-            <Route path={"/admin/customerList"} component={CustomerList} />
-            <Route path={"/admin/icons"} component={Icons} />
-            <Route path={"/admin/user-profile"} component={Profile} />
-            <Route path={"/admin/customerReport"} component={CustomerReport} />
-            <Route path={"/admin/credit-debit"} component={CreditAndDebit} /> 
-            <Route path={"/admin/DemoTest"} component={DemoTest} />
-          </Switch>
+          {this.state.loginAccess ? (
+            <Switch>
+              <Route path={"/admin/dashboard"} component={dashboard} />
+              <Route path={"/admin/addCustomer"} component={addCustomer} />
+              <Route path={"/admin/customerList"} component={CustomerList} />
+              <Route path={"/admin/icons"} component={Icons} />
+              <Route path={"/admin/user-profile"} component={Profile} />
+              <Route
+                path={"/admin/customerReport"}
+                component={CustomerReport}
+              />
+              <Route path={"/admin/credit-debit"} component={CreditAndDebit} />
+              <Route path={"/admin/DemoTest"} component={DemoTest} />
+            </Switch>
+          ) : null}
           <Container fluid>
             {children}
             <AdminFooter />
