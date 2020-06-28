@@ -12,7 +12,7 @@ export default class AuthService {
     let X_Authorized_Domainname = encryption(window.location.origin, "enc");
 
     return axios({
-      method: "post",
+      method: "post", 
       url: config.apiUrl + "/Account/authenticateUser",
       headers: {
         "Content-Type": "application/json",
