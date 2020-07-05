@@ -4,11 +4,15 @@ import config from "./../../helpers/config";
 
 export default class CustService {
   ///Get Customer Grid Data
-  GetCustomerData() {
+  GetCustomerData(filterCustName) {
+    debugger;
     return axios({
       method: "post",
       url: config.apiUrl + "/Customer/GetCustomerList",
       headers: authHeader(),
+      params: {
+        CustomerName: filterCustName === "" ? null : filterCustName,
+      },
     }).then((res) => {
       return res;
     });
@@ -72,9 +76,9 @@ export default class CustService {
       method: "post",
       url: config.apiUrl + "/Customer/DeleteCustomer",
       headers: authHeader(),
-      params:{
-        CustomerID:customer_Id
-      }
+      params: {
+        CustomerID: customer_Id,
+      },
     }).then((res) => {
       return res;
     });

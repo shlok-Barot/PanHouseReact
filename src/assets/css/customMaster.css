@@ -72,7 +72,7 @@
   font-weight: 500;
 }
 .red {
-  background-color: #f73c3c;
+  background-color: #f34949;
 }
 .green {
   background-color: #09bb09;
@@ -116,7 +116,7 @@
   font-weight: 600;
 }
 .creditFrom h3 {
-  color: #e6121c;
+  color: #09bd09;
   font-size: 18px;
   font-weight: 600;
   padding-bottom: 7px;
@@ -124,7 +124,7 @@
   text-align: center;
 }
 .debitFrom h3 {
-  color: #09bd09;
+  color: #e6121c;
   font-size: 18px;
   font-weight: 600;
   padding-bottom: 7px;
@@ -153,14 +153,40 @@
   border: 0px solid #cad1d7 !important;
   border-radius: 0.375rem;
 }
-.dropdown-Icon{
-  background: #ecf2f4 url("../img/icons/common/down-1.png") no-repeat right 12px center;
-}
-.drop-down{
+.drop-down {
   box-shadow: 0 1px 3px rgba(50, 50, 93, 0.15), 0 1px 0 rgba(0, 0, 0, 0.02);
   border: 0;
   transition: box-shadow .15s ease;
+  -webkit-appearance: none;
+  background: #ffffff url("../img/icons/common/down-1.png") no-repeat right 12px
+  center;
+  background-size: 14px;
 }
+.cust-name-drpdwn{
+  padding: 17px 25px 25px;
+  box-shadow: 0 0 20px 0 rgba(0,0,0,.1);
+}
+.txt-1{
+  background-color: #ecf2f4;
+  border-radius: 4px;
+  width: 100%;
+  height: 43px;
+  border: none;
+  padding: 10px;
+}
+.cust-status-header{
+  content: "";
+  background: url("../img/icons/common/down-1.png") no-repeat 50%;
+  background-size: 12px;
+  display: block;
+  height: 6px;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  width: 12px;
+}
+
 /* --------------Responsive css start------------------------ */
 
 @media all and (max-width: 250px) {

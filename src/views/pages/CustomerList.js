@@ -26,7 +26,10 @@ class CustomerList extends Component {
       EditCustomerMdl: false,
       editCustData: {},
       customer_ID: 0,
-      paginationBottom:"bottomCenter"
+      paginationBottom: "bottomCenter",
+      filterCustomerName: false,
+      filterCustName: "",
+      CustNameValidation: "",
     };
     this.Cust = new CustService();
   }
@@ -38,14 +41,14 @@ class CustomerList extends Component {
   /// handle get customer grid data
   handleGetCustomerGridData() {
     var self = this;
-    this.Cust.GetCustomerData()
+    this.Cust.GetCustomerData(this.state.filterCustName)
       .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          self.setState({ customerListData: data });
+          self.setState({ customerListData: data, CustNameValidation: "" });
         } else {
-          self.setState({ customerListData: [] });
+          self.setState({ customerListData: [], CustNameValidation: "" });
         }
       })
       .catch((res) => {
@@ -161,6 +164,19 @@ class CustomerList extends Component {
       });
     }
   };
+
+  /// filter on change
+  handleCustomerFilerOnchange(e) {
+    this.setState({
+      filterCustName: e.target.value,
+      CustNameValidation: "Please enter altest 3 characters.",
+    });
+    if (this.state.filterCustName.length > 2) {
+      setTimeout(() => {
+        this.handleGetCustomerGridData();
+      }, 10);
+    }
+  }
   render() {
     return (
       <>
@@ -183,7 +199,7 @@ class CustomerList extends Component {
           <Row>
             <div className="col">
               <Card className="shadow">
-                <div className="table-cntr raisereactTable tblResponsive">
+                <div className="table-cntr raisereactTable tblResponsive ">
                   <Table
                     dataSource={this.state.customerListData}
                     rowKey="customerID"
@@ -192,6 +208,36 @@ class CustomerList extends Component {
                         title: "Customer Name",
                         dataIndex: "customerName",
                         columnWidth: 150,
+                        // className: "cust-status-header",
+                        filterDropdown: (dataIndex) => (
+                          <div className="cust-name-drpdwn">
+                            <label>Customer Name</label>
+                            <input
+                              type="text"
+                              className="txt-1"
+                              autoComplete="off"
+                              placeholder="Enter Customer Name"
+                              maxLength={100}
+                              value={this.state.filterCustName}
+                              onChange={this.handleCustomerFilerOnchange.bind(
+                                this
+                              )}
+                            />
+                            {this.state.filterCustName.length > 1 && (
+                              <p style={{ color: "red", marginBottom: "0px" }}>
+                                {this.state.CustNameValidation}
+                              </p>
+                            )}
+                          </div>
+                        ),
+                        filterDropdownVisible: this.state.filterCustomerName,
+                        onFilterDropdownVisibleChange: (visible) =>
+                          this.setState({ filterCustomerName: visible }),
+                        filterIcon: (filtered) => (
+                          <span
+                            style={{ color: filtered ? "#1890ff" : undefined }}
+                          ></span>
+                        ),
                         sortDirections: ["descend", "ascend"],
                         sorter: (a, b) =>
                           a.customerName.localeCompare(b.customerName),

@@ -6,73 +6,46 @@ import {
   Container,
   Row,
   Button,
-  FormGroup,
-  Input,
-  Form,
-  Col,
+  // FormGroup,
+  // Input,
+  // Form,
+  // Col,
 } from "reactstrap";
-import Modal from "react-responsive-modal";
+import CreditDebitService from "./../APIService/CreditDebitService";
 
 class CustomerReport extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      customerReportData: [
-        {
-          key: "1",
-          customerName: "Bharat Barot",
-          debit: "₹ 450",
-          credit: "",
-        },
-        {
-          key: "2",
-          customerName: "Shlok Barot",
-          debit: "",
-          credit: "₹ 320",
-        },
-        {
-          key: "3",
-          customerName: "Mayur Patel",
-          debit: "₹ 400",
-          credit: "",
-        },
-        {
-          key: "4",
-          customerName: "Demo user",
-          debit: "",
-          credit: "₹ 565",
-        },
-      ],
-      DebitMdl: false,
-      creditMdl: false,
+      customerReportData: [],
+      paginationBottom: "bottomCenter",
     };
+    this.CreditDebit = new CreditDebitService();
   }
 
-  /// handle Debit Modal Open
-  handleDebitModalOpen() {
-    this.setState({
-      DebitMdl: true,
-    });
+  componentDidMount() {
+    this.handleGetCreditDebitGrid();
   }
-  /// handle Debit Modal Close
-  handleDebitModalClose = () => {
-    this.setState({
-      DebitMdl: false,
-    });
-  };
-  /// handle Credit modal open
-  handleCreditModalOpen = () => {
-    this.setState({
-      creditMdl: true,
-    });
-  };
-  /// handle Credit modal close
-  handleCreditModalClose = () => {
-    this.setState({
-      creditMdl: false,
-    });
-  };
+
+  /// --------------API function start-------------------------
+  handleGetCreditDebitGrid() {
+    var self = this;
+    this.CreditDebit.GetCreditDebitGriddata()
+      .then(function (res) {
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ customerReportData: data });
+        } else {
+          self.setState({ customerReportData: [] });
+        }
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  }
+  /// --------------API function end---------------------------
   render() {
     return (
       <>
@@ -84,23 +57,27 @@ class CustomerReport extends Component {
                 <div className="table-cntr raisereactTable tblResponsive">
                   <Table
                     dataSource={this.state.customerReportData}
+                    rowKey="customerID"
                     columns={[
                       {
                         title: "Customer Name",
                         dataIndex: "customerName",
-                        key: "customerName",
                         columnWidth: 100,
+                        sortDirections: ["descend", "ascend"],
+                        sorter: (a, b) =>
+                          a.customerName.localeCompare(b.customerName),
                       },
                       {
-                        title: "Debit",
-                        dataIndex: "debit",
-                        key: "debit",
+                        title: "Credit",
+                        dataIndex: "creditAmount",
+                        sorter: (a, b) =>
+                          a.creditAmount - b.creditAmount,
                         render: (row, item) => {
                           return (
                             <div>
-                              {item.debit !== "" && (
-                                <span className="table-btn red">
-                                  {item.debit}
+                              {item.creditAmount !== "" && (
+                                <span className="table-btn green">
+                                  {item.creditAmount}
                                 </span>
                               )}
                             </div>
@@ -108,15 +85,52 @@ class CustomerReport extends Component {
                         },
                       },
                       {
-                        title: "Credit",
-                        dataIndex: "credit",
-                        key: "credit",
+                        title: "Debit",
+                        dataIndex: "debitAmount",
+                        sorter: (a, b) =>
+                        a.debitAmount - b.debitAmount,
                         render: (row, item) => {
                           return (
                             <div>
-                              {item.credit !== "" && (
+                              {item.debitAmount !== "" && (
+                                <span className="table-btn red">
+                                  {item.debitAmount}
+                                </span>
+                              )}
+                            </div>
+                          );
+                        },
+                      },
+                      {
+                        title: "Extra Amount",
+                        dataIndex: "extraCredit",
+                        sorter: (a, b) =>
+                        a.extraCredit - b.extraCredit,
+                        columnWidth: 130,
+                        render: (row, item) => {
+                          return (
+                            <div>
+                              {item.extraCredit !== "" && (
                                 <span className="table-btn green">
-                                  {item.credit}
+                                  {item.extraCredit}
+                                </span>
+                              )}
+                            </div>
+                          );
+                        },
+                      },
+                      {
+                        title: "Pending Amount",
+                        dataIndex: "needToPay",
+                        sorter: (a, b) =>
+                        a.needToPay - b.needToPay,
+                        columnWidth: 120,
+                        render: (row, item) => {
+                          return (
+                            <div>
+                              {item.needToPay !== "" && (
+                                <span className="table-btn red">
+                                  {item.needToPay}
                                 </span>
                               )}
                             </div>
@@ -139,102 +153,16 @@ class CustomerReport extends Component {
                         },
                       },
                     ]}
-                    pagination={{ defaultPageSize: 10, showSizeChanger: true }}
+                    pagination={{
+                      defaultPageSize: 10,
+                      showSizeChanger: true,
+                      // position: [this.state.paginationBottom],
+                    }}
                     showSizeChanger={true}
                     onShowSizeChange={true}
                   />
                 </div>
               </Card>
-              <Modal
-                onClose={this.handleDebitModalClose}
-                open={this.state.DebitMdl}
-                modalId="editCustomerDetails"
-                // overlayId="logout-ovrly"
-              >
-                <div className="p-15">
-                  <h3 className="text-muted">DEBIT FORM</h3>
-                  <div>
-                    <Form>
-                      <div>
-                        <Row>
-                          <Col lg="12">
-                            <FormGroup>
-                              <label
-                                className="form-control-label"
-                                htmlFor="input-fullname"
-                              >
-                                Full Name
-                              </label>
-                              <Input
-                                className="form-control-alternative"
-                                id="input-fullname"
-                                placeholder="Full Name"
-                                type="text"
-                              />
-                            </FormGroup>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col lg="12">
-                            <FormGroup>
-                              <label
-                                className="form-control-label"
-                                htmlFor="input-email"
-                              >
-                                Amount
-                              </label>
-                              <Input
-                                className="form-control-alternative"
-                                id="input-email"
-                                placeholder="Email ID"
-                                type="text"
-                              />
-                            </FormGroup>
-                          </Col>
-                        </Row>
-                      </div>
-                      <div>
-                        <Row>
-                          <Col md="12">
-                            <FormGroup>
-                              <label
-                                className="form-control-label"
-                                htmlFor="input-address"
-                              >
-                                Address
-                              </label>
-                              <Input
-                                className="form-control-alternative"
-                                id="input-address"
-                                placeholder="Address"
-                                type="text"
-                              />
-                            </FormGroup>
-                          </Col>
-                        </Row>
-                      </div>
-                      <div>
-                        <FormGroup className="txt-center">
-                          <Button
-                            color="primary"
-                            onClick={(e) => e.preventDefault()}
-                          >
-                            Submit
-                          </Button>
-                        </FormGroup>
-                      </div>
-                    </Form>
-                  </div>
-                </div>
-              </Modal>
-              <Modal
-                onClose={this.handleCreditModalClose}
-                open={this.state.creditMdl}
-                modalId="editCustomerDetails"
-                // overlayId="logout-ovrly"
-              >
-                <h3>Credit Form</h3>
-              </Modal>
             </div>
           </Row>
         </Container>
