@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Header from "components/Headers/Header";
-import { Table } from "antd";
+import { Table,notification } from "antd";
 import {
   Card,
   Container,
@@ -29,6 +29,8 @@ class CustomerReport extends Component {
   }
 
   /// --------------API function start-------------------------
+  
+  /// Get credit debit grid data
   handleGetCreditDebitGrid() {
     var self = this;
     this.CreditDebit.GetCreditDebitGriddata()
@@ -39,6 +41,28 @@ class CustomerReport extends Component {
           self.setState({ customerReportData: data });
         } else {
           self.setState({ customerReportData: [] });
+        }
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  }
+
+  /// share customer report
+  handleShareCustomerReport(customer_Id){
+    // var self = this;
+    this.CreditDebit.ShareCustomerReport(customer_Id)
+      .then(function (res) {
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          window.open("//" + data, "_blank");
+        } else {
+          notification.error({
+            message: "Error",
+            description: "Server temporarily not available.",
+            duration: 3,
+          });
         }
       })
       .catch((res) => {
@@ -145,7 +169,7 @@ class CustomerReport extends Component {
                             <Button
                               color="primary"
                               className="btnEdit"
-                              onClick={(e) => e.preventDefault()}
+                              onClick={this.handleShareCustomerReport.bind(this,item.customerID)}
                             >
                               Report
                             </Button>

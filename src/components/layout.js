@@ -77,7 +77,7 @@ export class layout extends Component {
               <Route path={"/admin/addCustomer"} component={addCustomer} />
               <Route path={"/admin/customerList"} component={CustomerList} />
               <Route path={"/admin/icons"} component={Icons} />
-              <Route path={"/admin/user-profile"} component={Profile} />
+              <Route path={"/admin/userProfile"} component={Profile} />
               <Route
                 path={"/admin/customerReport"}
                 component={CustomerReport}

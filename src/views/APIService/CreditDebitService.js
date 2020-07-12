@@ -60,4 +60,18 @@ export default class CreditDebitService {
       });
     }
 
+    /// share customer report
+    ShareCustomerReport(customer_Id){
+      return axios({
+        method: "post",
+        url: config.apiUrl + "/CreditDebit/CustomerShareMassanger",
+        headers: authHeader(),
+        params: {
+          CustomerId: customer_Id,
+        },
+      }).then((res) => {
+        return res;
+      });
+    }
+
 }

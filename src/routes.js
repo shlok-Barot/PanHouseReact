@@ -43,7 +43,7 @@ import CreditAndDebit from "views/pages/CreditAndDebit";
       layout: "/admin",
     },
     {
-      path: "/user-profile",
+      path: "/userProfile",
       name: "My Profile",
       icon: "ni ni-circle-08 text-yellow",
       component: Profile,
