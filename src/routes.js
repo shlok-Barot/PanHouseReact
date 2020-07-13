@@ -36,19 +36,19 @@ import CreditAndDebit from "views/pages/CreditAndDebit";
       layout: "/admin",
     },
     {
-      path: "/icons",
-      name: "Icons",
-      icon: "ni ni-planet text-blue",
-      component: Icons,
-      layout: "/admin",
-    },
-    {
       path: "/userProfile",
       name: "My Profile",
       icon: "ni ni-circle-08 text-yellow",
       component: Profile,
       layout: "/admin",
     },
+    {
+      path: "/icons",
+      name: "Icons",
+      icon: "ni ni-planet text-blue",
+      component: Icons,
+      layout: "/admin",
+    }
     // {
     //   path: "/login",
     //   name: "LogOut",

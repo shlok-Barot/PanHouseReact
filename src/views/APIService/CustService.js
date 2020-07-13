@@ -5,7 +5,6 @@ import config from "./../../helpers/config";
 export default class CustService {
   ///Get Customer Grid Data
   GetCustomerData(filterCustName) {
-    debugger;
     return axios({
       method: "post",
       url: config.apiUrl + "/Customer/GetCustomerList",

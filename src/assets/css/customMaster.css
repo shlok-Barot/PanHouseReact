@@ -159,15 +159,15 @@
   transition: box-shadow .15s ease;
   -webkit-appearance: none;
   background: #ffffff url("../img/icons/common/down-1.png") no-repeat right 12px
-  center;
+    center;
   background-size: 14px;
   cursor: pointer;
 }
-.cust-name-drpdwn{
+.cust-name-drpdwn {
   padding: 17px 25px 25px;
-  box-shadow: 0 0 20px 0 rgba(0,0,0,.1);
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, .1);
 }
-.txt-1{
+.txt-1 {
   background-color: #ecf2f4;
   border-radius: 4px;
   width: 100%;
@@ -175,7 +175,7 @@
   border: none;
   padding: 10px;
 }
-.cust-status-header{
+.cust-status-header {
   content: "";
   background: url("../img/icons/common/down-1.png") no-repeat 50%;
   background-size: 12px;
@@ -187,12 +187,28 @@
   transform: translateY(-50%);
   width: 12px;
 }
-/* .bn */
+.btnSubmit {
+  width: 170px;
+}
+.imgWidth {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+.circleImgupload {
+  margin-left: 12.0rem;
+  margin-top: -20px;
+  z-index: 0000;
+  margin-bottom: -30px;
+}
 /* --------------Responsive css start------------------------ */
 
 @media all and (max-width: 250px) {
   .btnWidth {
     min-width: 100%;
+    width: 100%;
+  }
+  .btnSubmit {
     width: 100%;
   }
 }
@@ -205,6 +221,14 @@
     > thead
     > tr:first-child th:first-child {
     min-width: 100%;
+  }
+  .btnSubmit {
+    width: 100%;
+  }
+  .circleImgupload {
+    margin-left: 12.5rem!important;
+    margin-top: -206px;
+    z-index: 0000;
   }
 }
 
@@ -222,6 +246,14 @@
     display: inline-block;
     width: 140px !important;
   }
+  .btnSubmit {
+    width: 100%;
+  }
+  .circleImgupload {
+    margin-left: 13.3rem!important;
+    margin-top: -206px;
+    z-index: 0000;
+  }
 }
 @media all and (max-width: 576px) {
   #editCustomerDetails {
@@ -237,12 +269,23 @@
     width: 155px !important;
     min-width: 100% !important;
   }
+  .btnSubmit {
+    width: 100%;
+  }
+  .circleImgupload {
+    margin-left: 18.5rem;
+    margin-top: -206px;
+    z-index: 0000;
+  }
 }
 @media all and (max-width: 640px) {
   .tblResponsive .ant-table-container table
     > thead
     > tr:first-child th:first-child {
     min-width: 160px;
+  }
+  .btnSubmit {
+    width: 100%;
   }
 }
 /* --------------Responsive css End------------------------- */

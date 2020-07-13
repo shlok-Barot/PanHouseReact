@@ -276,7 +276,7 @@ class CreditAndDebit extends Component {
                             </Row>
                             <div className="pl-lg-4">
                               <FormGroup className="txt-center">
-                                <Button color="primary" type="submit">
+                                <Button color="primary" className="btnSubmit" type="submit">
                                   Submit
                                 </Button>
                               </FormGroup>
