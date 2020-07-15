@@ -225,7 +225,7 @@ class Profile extends React.Component {
                       </Button>
                     </div>
                   </CardHeader>
-                  <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+                  <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4 mobilespace">
                     <div className="d-flex justify-content-between">
                       <label
                         htmlFor="Userfile-upload"
@@ -263,7 +263,7 @@ class Profile extends React.Component {
                       </div>
                       <div className="h5 mt-4">
                         <i className="ni business_briefcase-24 mr-2" />
-                        Store Name :- {this.state.companyName}
+                        <i className="ni ni-shop mr-2" /> {this.state.companyName}
                       </div>
 
                       {/* <div>
