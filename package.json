@@ -16,7 +16,7 @@
   "author": "Shlok Barot",
   "license": "MIT",
   "scripts": {
-    "start": "node ./node_modules/react-scripts/bin/react-scripts.js start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -41,7 +41,7 @@
     "classnames": "2.2.6",
     "crypto-js": "^4.0.0",
     "moment": "^2.24.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "nouislider": "14.1.1",
     "react": "16.12.0",
     "react-autocomplete": "^1.8.1",
@@ -58,7 +58,9 @@
     "react-scripts": "^3.4.1",
     "react-table": "^6.11.5",
     "reactstrap": "8.4.1",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "redux-form": "^8.3.6",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@types/googlemaps": "3.39.2",

@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// reactstrap components
 import {
   DropdownMenu,
   DropdownItem,
@@ -20,14 +19,14 @@ import {
 import axios from "axios";
 import config from "helpers/config";
 import { authHeader } from "helpers/authHeader";
+import { connect } from "react-redux";
+import { GetUserList } from "../../actions/action";
+import ProfileImg from "./../../assets/img/theme/Avatar1.jpg";
 
 class AdminNavbar extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {};
+  componentDidMount() {
+    this.props.FetchUserList();
   }
-
   /// handle Log Out system
   handleLogOutSystem() {
     axios({
@@ -77,12 +76,16 @@ class AdminNavbar extends React.Component {
                     <span className="avatar avatar-sm rounded-circle">
                       <img
                         alt="..."
-                        src={require("assets/img/theme/team-4-800x800.jpg")}
+                        src={
+                          this.props.imgFlag === ""
+                            ? ProfileImg
+                            : this.props.userProfile
+                        }
                       />
                     </span>
                     <Media className="ml-2 d-none d-lg-block">
                       <span className="mb-0 text-sm font-weight-bold">
-                        Jessica Jones 
+                        {this.props.firstName} {this.props.lastName}
                       </span>
                     </Media>
                   </Media>
@@ -114,4 +117,20 @@ class AdminNavbar extends React.Component {
   }
 }
 
-export default AdminNavbar;
+const mapStatetoProps = (state) => {
+  return {
+    firstName: state.firstName,
+    lastName: state.lastName,
+    userProfile: state.userProfile,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    FetchUserList: () => {
+      dispatch(GetUserList());
+    },
+  };
+};
+
+export default connect(mapStatetoProps, mapDispatchToProps)(AdminNavbar);

@@ -13,11 +13,14 @@ import "react-responsive-modal/styles.css";
 import AuthLayout from "layouts/Auth.js";
 import AdminLayout from "./../src/components/layout";
 
-import { createStore } from "redux";
+import { createStore,applyMiddleware,compose } from "redux";
+import  thunk from 'redux-thunk';
 import { Provider } from "react-redux";
 import reducer from './reducers/reducer'
 
-const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
 
 ReactDOM.render(
   <Provider store={store}>

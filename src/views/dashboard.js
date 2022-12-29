@@ -1,11 +1,7 @@
 import React from "react";
-// node.js library that concatenates classes (strings)
 import classnames from "classnames";
-// javascipt plugin for creating charts
 import Chart from "chart.js";
-// react plugin used to create charts
 import { Line, Bar } from "react-chartjs-2";
-// reactstrap components
 import {
   Button,
   Card,
@@ -14,22 +10,21 @@ import {
   NavItem,
   NavLink,
   Nav,
-  Progress,
-  Table,
   Container,
   Row,
   Col,
   CardTitle,
 } from "reactstrap";
-
-// core components
 import {
   chartOptions,
   parseOptions,
   chartExample1,
   chartExample2,
 } from "variables/charts.js";
-
+import { connect } from "react-redux";
+import { GetUserList } from "../actions/action";
+import { Table, notification } from "antd";
+import CreditDebitService from "./APIService/CreditDebitService";
 
 class dashboard extends React.Component {
   constructor(props) {
@@ -37,11 +32,63 @@ class dashboard extends React.Component {
     this.state = {
       activeNav: 1,
       chartExample1Data: "data1",
+      CustReportLoader:false,
+      customerReportData: [],
     };
     if (window.Chart) {
       parseOptions(Chart, chartOptions());
     }
+    this.CreditDebit = new CreditDebitService();
   }
+
+  componentDidMount() {
+    this.props.FetchUserList();
+    this.handleGetCreditDebitGrid();
+  }
+  /// --------------API function start-------------------------
+  /// Get credit debit grid data
+  handleGetCreditDebitGrid() {
+    var self = this;
+    this.setState({
+      CustReportLoader:true
+    })
+    this.CreditDebit.GetCreditDebitGriddata()
+      .then(function (res) {
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ customerReportData: data,CustReportLoader:false });
+        } else {
+          self.setState({ customerReportData: [],CustReportLoader:false });
+        }
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  }
+
+  /// share customer report
+  handleShareCustomerReport(customer_Id) {
+    // var self = this;
+    this.CreditDebit.ShareCustomerReport(customer_Id)
+      .then(function (res) {
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          window.open("//" + data, "_blank");
+        } else {
+          notification.error({
+            message: "Error",
+            description: "Server temporarily not available.",
+            duration: 3,
+          });
+        }
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  }
+  /// --------------API function end---------------------------
   toggleNavs = (e, index) => {
     e.preventDefault();
     this.setState({
@@ -50,6 +97,10 @@ class dashboard extends React.Component {
         this.state.chartExample1Data === "data1" ? "data2" : "data1",
     });
   };
+  /// handle page rediret
+  handlePageRedirect() {
+    this.props.history.push("/admin/customerReport");
+  }
   render() {
     return (
       <>
@@ -261,18 +312,17 @@ class dashboard extends React.Component {
             </Col>
           </Row>
           <Row className="mt-5">
-            <Col className="mb-5 mb-xl-0" xl="8">
+            <Col className="mb-5 mb-xl-0" xl="12">
               <Card className="shadow">
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
-                      <h3 className="mb-0">Page visits</h3>
+                      <h3 className="mb-0">Customer Reports</h3>
                     </div>
                     <div className="col text-right">
                       <Button
                         color="primary"
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
+                        onClick={this.handlePageRedirect.bind(this)}
                         size="sm"
                       >
                         See all
@@ -280,171 +330,114 @@ class dashboard extends React.Component {
                     </div>
                   </Row>
                 </CardHeader>
-                <Table className="align-items-center table-flush" responsive>
-                  <thead className="thead-light">
-                    <tr>
-                      <th scope="col">Page name</th>
-                      <th scope="col">Visitors</th>
-                      <th scope="col">Unique users</th>
-                      <th scope="col">Bounce rate</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">/argon/</th>
-                      <td>4,569</td>
-                      <td>340</td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        46,53%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/index.html</th>
-                      <td>3,985</td>
-                      <td>319</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        46,53%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/charts.html</th>
-                      <td>3,513</td>
-                      <td>294</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        36,49%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/tables.html</th>
-                      <td>2,050</td>
-                      <td>147</td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        50,87%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/profile.html</th>
-                      <td>1,795</td>
-                      <td>190</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-danger mr-3" />{" "}
-                        46,53%
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </Card>
-            </Col>
-            <Col xl="4">
-              <Card className="shadow">
-                <CardHeader className="border-0">
-                  <Row className="align-items-center">
-                    <div className="col">
-                      <h3 className="mb-0">Social traffic</h3>
-                    </div>
-                    <div className="col text-right">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                        size="sm"
-                      >
-                        See all
-                      </Button>
-                    </div>
-                  </Row>
-                </CardHeader>
-                <Table className="align-items-center table-flush" responsive>
-                  <thead className="thead-light">
-                    <tr>
-                      <th scope="col">Referral</th>
-                      <th scope="col">Visitors</th>
-                      <th scope="col" />
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">Facebook</th>
-                      <td>1,480</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">60%</span>
-                          <div>
-                            <Progress
-                              max="100"
-                              value="60"
-                              barClassName="bg-gradient-danger"
-                            />
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Facebook</th>
-                      <td>5,480</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">70%</span>
-                          <div>
-                            <Progress
-                              max="100"
-                              value="70"
-                              barClassName="bg-gradient-success"
-                            />
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Google</th>
-                      <td>4,807</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">80%</span>
-                          <div>
-                            <Progress max="100" value="80" />
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Instagram</th>
-                      <td>3,678</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">75%</span>
-                          <div>
-                            <Progress
-                              max="100"
-                              value="75"
-                              barClassName="bg-gradient-info"
-                            />
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">twitter</th>
-                      <td>2,645</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">30%</span>
-                          <div>
-                            <Progress
-                              max="100"
-                              value="30"
-                              barClassName="bg-gradient-warning"
-                            />
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
+                <div className="table-cntr raisereactTable tblResponsive">
+                  <Table
+                    dataSource={this.state.customerReportData}
+                    rowKey="customerID"
+                    columns={[
+                      {
+                        title: "Customer Name",
+                        dataIndex: "customerName",
+                        columnWidth: 100,
+                        sortDirections: ["descend", "ascend"],
+                        sorter: (a, b) =>
+                          a.customerName.localeCompare(b.customerName),
+                      },
+                      {
+                        title: "Credit",
+                        dataIndex: "creditAmount",
+                        sorter: (a, b) => a.creditAmount - b.creditAmount,
+                        render: (row, item) => {
+                          return (
+                            <div>
+                              {item.creditAmount !== "" && (
+                                <span className="table-btn green">
+                                  {item.creditAmount}
+                                </span>
+                              )}
+                            </div>
+                          );
+                        },
+                      },
+                      {
+                        title: "Debit",
+                        dataIndex: "debitAmount",
+                        sorter: (a, b) => a.debitAmount - b.debitAmount,
+                        render: (row, item) => {
+                          return (
+                            <div>
+                              {item.debitAmount !== "" && (
+                                <span className="table-btn red">
+                                  {item.debitAmount}
+                                </span>
+                              )}
+                            </div>
+                          );
+                        },
+                      },
+                      {
+                        title: "Extra Amount",
+                        dataIndex: "extraCredit",
+                        sorter: (a, b) => a.extraCredit - b.extraCredit,
+                        columnWidth: 130,
+                        render: (row, item) => {
+                          return (
+                            <div>
+                              {item.extraCredit !== "" && (
+                                <span className="table-btn green">
+                                  {item.extraCredit}
+                                </span>
+                              )}
+                            </div>
+                          );
+                        },
+                      },
+                      {
+                        title: "Pending Amount",
+                        dataIndex: "needToPay",
+                        sorter: (a, b) => a.needToPay - b.needToPay,
+                        columnWidth: 120,
+                        render: (row, item) => {
+                          return (
+                            <div>
+                              {item.needToPay !== "" && (
+                                <span className="table-btn red">
+                                  {item.needToPay}
+                                </span>
+                              )}
+                            </div>
+                          );
+                        },
+                      },
+                      {
+                        title: "Action",
+                        key: "action",
+                        render: (row, item) => {
+                          return (
+                            <Button
+                              color="primary"
+                              className="btnEdit"
+                              onClick={this.handleShareCustomerReport.bind(
+                                this,
+                                item.customerID
+                              )}
+                            >
+                              Report
+                            </Button>
+                          );
+                        },
+                      },
+                    ]}
+                    pagination={{
+                      defaultPageSize: 10,
+                      showSizeChanger: true,
+                    }}
+                    size="middle"
+                    loading={this.state.CustReportLoader}
+                    showSizeChanger={true}
+                    onShowSizeChange={true}
+                  />
+                </div>
               </Card>
             </Col>
           </Row>
@@ -454,4 +447,11 @@ class dashboard extends React.Component {
   }
 }
 
-export default dashboard;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    FetchUserList: () => {
+      dispatch(GetUserList());
+    },
+  };
+};
+export default connect(null, mapDispatchToProps)(dashboard);

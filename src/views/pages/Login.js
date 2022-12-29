@@ -23,6 +23,7 @@ class Login extends React.Component {
     this.state = {
       emailId: "",
       password: "",
+      passwordHideShow: false,
     };
     this.handleAuthenticateUser = this.handleAuthenticateUser.bind(this);
     this.Auth = new AuthService();
@@ -56,6 +57,11 @@ class Login extends React.Component {
   }
 
   /// --------------API Function End--------------------
+  handlehideShowPassword = () => {
+    this.setState({
+      passwordHideShow: !this.state.passwordHideShow,
+    });
+  };
   /// handle Onchage
   handleOnChange = (e) => {
     this.setState({
@@ -99,12 +105,24 @@ class Login extends React.Component {
                     </InputGroupAddon>
                     <Input
                       placeholder="Password"
-                      type="password"
+                      type={this.state.passwordHideShow ? "text" : "password"}
                       autoComplete="new-password"
                       name="password"
                       value={this.state.password}
                       onChange={this.handleOnChange}
                     />
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i
+                          className={
+                            this.state.passwordHideShow
+                              ? "fas fa-eye cursorPo text-blue"
+                              : "fas fa-eye-slash cursorPo text-blue"
+                          }
+                          onClick={this.handlehideShowPassword}
+                        />
+                      </InputGroupText>
+                    </InputGroupAddon>
                   </InputGroup>
                 </FormGroup>
                 <div className="text-center">

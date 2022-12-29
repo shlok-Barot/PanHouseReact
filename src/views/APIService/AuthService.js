@@ -22,10 +22,11 @@ export default class AuthService {
         "X-Authorized-Domainname": X_Authorized_Domainname,
       },
     }).then((res) => {
-      return res;
+      return res; 
     });
   }
 
+  /// forgot Password
   UserForgotPassword(email_Id) {
     return axios({
       method: "post",
@@ -38,4 +39,22 @@ export default class AuthService {
       return res;
     });
   }
+
+    /// Change Password
+    UserChangePassword(oldPassword,newPassword) {
+      debugger
+      let old_Password = encryption(oldPassword, "enc");
+      let new_Password = encryption(newPassword, "enc");
+      return axios({
+        method: "post",
+        url: config.apiUrl + "/User/ChangePassword",
+        headers: authHeader(),
+        data: {
+          Password: old_Password,
+          NewPassword:new_Password
+        },
+      }).then((res) => {
+        return res;
+      });
+    }
 }

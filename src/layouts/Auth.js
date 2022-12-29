@@ -4,6 +4,7 @@ import { Route, Switch } from "react-router-dom";
 import { Container, Row } from "reactstrap";
 import Login from "./../views/pages/Login";
 import ForgotPassword from "views/pages/ForgotPassword";
+import ChangePassword from "views/pages/ChangePassword";
 // import routes from "routes.js";
 
 class Auth extends React.Component {
@@ -41,6 +42,7 @@ class Auth extends React.Component {
               <Switch>
                 <Route path={"/auth/login"} component={Login} />
                 <Route path={"/auth/forgotpassword"} component={ForgotPassword} />
+                <Route path={"/auth/changepassword"} component={ChangePassword} />
               </Switch>
             </Row>
           </Container>

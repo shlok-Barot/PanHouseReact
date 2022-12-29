@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Header from "components/Headers/Header";
-import { Table,notification } from "antd";
+import { Table, notification } from "antd";
 import {
   Card,
   Container,
@@ -19,7 +19,7 @@ class CustomerReport extends Component {
 
     this.state = {
       customerReportData: [],
-      paginationBottom: "bottomCenter",
+      CustReportLoader:false
     };
     this.CreditDebit = new CreditDebitService();
   }
@@ -29,18 +29,20 @@ class CustomerReport extends Component {
   }
 
   /// --------------API function start-------------------------
-  
   /// Get credit debit grid data
   handleGetCreditDebitGrid() {
     var self = this;
+    this.setState({
+      CustReportLoader:true
+    })
     this.CreditDebit.GetCreditDebitGriddata()
       .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          self.setState({ customerReportData: data });
+          self.setState({ customerReportData: data,CustReportLoader:false });
         } else {
-          self.setState({ customerReportData: [] });
+          self.setState({ customerReportData: [],CustReportLoader:false });
         }
       })
       .catch((res) => {
@@ -49,7 +51,7 @@ class CustomerReport extends Component {
   }
 
   /// share customer report
-  handleShareCustomerReport(customer_Id){
+  handleShareCustomerReport(customer_Id) {
     // var self = this;
     this.CreditDebit.ShareCustomerReport(customer_Id)
       .then(function (res) {
@@ -94,8 +96,7 @@ class CustomerReport extends Component {
                       {
                         title: "Credit",
                         dataIndex: "creditAmount",
-                        sorter: (a, b) =>
-                          a.creditAmount - b.creditAmount,
+                        sorter: (a, b) => a.creditAmount - b.creditAmount,
                         render: (row, item) => {
                           return (
                             <div>
@@ -111,8 +112,7 @@ class CustomerReport extends Component {
                       {
                         title: "Debit",
                         dataIndex: "debitAmount",
-                        sorter: (a, b) =>
-                        a.debitAmount - b.debitAmount,
+                        sorter: (a, b) => a.debitAmount - b.debitAmount,
                         render: (row, item) => {
                           return (
                             <div>
@@ -128,8 +128,7 @@ class CustomerReport extends Component {
                       {
                         title: "Extra Amount",
                         dataIndex: "extraCredit",
-                        sorter: (a, b) =>
-                        a.extraCredit - b.extraCredit,
+                        sorter: (a, b) => a.extraCredit - b.extraCredit,
                         columnWidth: 130,
                         render: (row, item) => {
                           return (
@@ -146,8 +145,7 @@ class CustomerReport extends Component {
                       {
                         title: "Pending Amount",
                         dataIndex: "needToPay",
-                        sorter: (a, b) =>
-                        a.needToPay - b.needToPay,
+                        sorter: (a, b) => a.needToPay - b.needToPay,
                         columnWidth: 120,
                         render: (row, item) => {
                           return (
@@ -171,7 +169,7 @@ class CustomerReport extends Component {
                               className="btnEdit"
                               onClick={this.handleShareCustomerReport.bind(this,item.customerID)}
                             >
-                              Report
+                             Report
                             </Button>
                           );
                         },
@@ -180,10 +178,10 @@ class CustomerReport extends Component {
                     pagination={{
                       defaultPageSize: 10,
                       showSizeChanger: true,
-                      // position: [this.state.paginationBottom],
                     }}
                     showSizeChanger={true}
                     onShowSizeChange={true}
+                    loading={this.state.CustReportLoader}
                   />
                 </div>
               </Card>

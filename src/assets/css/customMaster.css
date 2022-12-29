@@ -4,6 +4,9 @@
 .m-t-10 {
   margin-top: 10px;
 }
+.cursorPo {
+  cursor: pointer;
+}
 .dobpicker {
   display: block !important;
   box-shadow: 0 1px 3px rgba(50, 50, 93, 0.15), 0 1px 0 rgba(0, 0, 0, 0.02) !important;
@@ -36,7 +39,11 @@
 .tblResponsive {
   overflow: auto;
 }
-
+.btn-whatsapp {
+  color: #fff;
+  background-color: #54cc61;
+  border-color: #54cc61;
+}
 .tblResponsive
   .ant-table-container
   table
@@ -205,6 +212,30 @@
   height: 190px !important;
   width: 190px !important;
 }
+.avatar img {
+  height: 37px;
+}
+.usrChangePass {
+  text-align: center;
+  font-size: 17px;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+.btnSubmitWdt {
+  width: 100%;
+}
+.footername {
+  font-size: 15px;
+  font-weight: 500;
+  color: #0638b1;
+  margin-right: 15px;
+}
+.btn-fafa .btn-inner--icon i:not(.fa) {
+  position: relative;
+  top: 2px;
+  font-size: 18px;
+  left: 2px;
+}
 /* --------------Responsive css start------------------------ */
 
 @media all and (max-width: 250px) {
@@ -236,10 +267,10 @@
 }
 @media all and (max-width: 500px) {
   .circleImgupload {
-    margin-left: 17rem !important;
+    margin-left: 16.5rem !important;
     margin-top: -100px !important;
   }
-  .mobilespace{
+  .mobilespace {
     margin-top: -100px;
   }
 }
@@ -265,7 +296,7 @@
     margin-top: -100px !important;
     z-index: 0000;
   }
-  .mobilespace{
+  .mobilespace {
     margin-top: -100px;
   }
 }
@@ -291,7 +322,7 @@
     margin-top: -100px !important;
     z-index: 0000;
   }
-  .mobilespace{
+  .mobilespace {
     margin-top: -100px;
   }
 }
@@ -310,7 +341,7 @@
     margin-left: 11rem !important;
     margin-top: -100px !important;
   }
-  .mobilespace{
+  .mobilespace {
     margin-top: -100px;
   }
 }

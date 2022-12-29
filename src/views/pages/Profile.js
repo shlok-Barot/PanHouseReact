@@ -1,6 +1,4 @@
 import React from "react";
-
-// reactstrap components
 import {
   Button,
   Card,
@@ -16,6 +14,7 @@ import UserService from "views/APIService/UserService";
 import ProfileImg from "./../../assets/img/theme/Avatar1.jpg";
 import ImgUpload from "./../../assets/img/icons/common/fileIcon.jpg";
 import { notification, Spin } from "antd";
+import { Link } from "react-router-dom";
 
 class Profile extends React.Component {
   constructor(props) {
@@ -124,8 +123,8 @@ class Profile extends React.Component {
   /// ----------------API end functiopn---------------------------
   /// handle set data
   handleSetUserData(data) {
-     var image = data.profilePicture.split("/");
-     var imgFlag = image[image.length - 1];
+    var image = data.profilePicture.split("/");
+    var imgFlag = image[image.length - 1];
 
     this.setState({
       firstName: data.firstName,
@@ -136,7 +135,7 @@ class Profile extends React.Component {
       companyName: data.companyName,
       cityName: data.cityName,
       userId: data.userId,
-      userProfile : data.profilePicture,
+      userProfile: data.profilePicture,
       imgFlag,
     });
   }
@@ -247,11 +246,6 @@ class Profile extends React.Component {
                     />
                   </CardHeader>
                   <CardBody className="pt-0 pt-md-4">
-                    {/* <Row>
-                      <div className="col">
-                        <div className="d-flex justify-content-center mt-md-5"></div>
-                      </div>
-                    </Row> */}
                     <div className="text-center">
                       <h2>
                         {this.state.firstName}&nbsp;
@@ -263,13 +257,9 @@ class Profile extends React.Component {
                       </div>
                       <div className="h5 mt-4">
                         <i className="ni business_briefcase-24 mr-2" />
-                        <i className="ni ni-shop mr-2" /> {this.state.companyName}
+                        <i className="ni ni-shop mr-2" />{" "}
+                        {this.state.companyName}
                       </div>
-
-                      {/* <div>
-                      <i className="ni education_hat mr-2" />
-                      University of Computer Science
-                    </div> */}
                     </div>
                   </CardBody>
                 </Card>
@@ -335,6 +325,7 @@ class Profile extends React.Component {
                             <Input
                               className="form-control-alternative"
                               placeholder="Enter Mobile Number"
+                              autoComplete="off"
                               type="email"
                               maxLength={10}
                               name="mobileNo"
@@ -367,10 +358,6 @@ class Profile extends React.Component {
                         </Col>
                       </Row>
                     </div>
-                    {/* <hr className="my-4" />
-                    <h6 className="heading-small text-muted mb-4">
-                      Contact information
-                    </h6> */}
                     <div className="pl-lg-4">
                       <Row>
                         <Col md="12">
@@ -381,6 +368,7 @@ class Profile extends React.Component {
                             <Input
                               className="form-control-alternative"
                               placeholder="Enter Address"
+                              autoComplete="off"
                               type="text"
                               maxLength={100}
                               name="address"
@@ -409,6 +397,9 @@ class Profile extends React.Component {
                       </FormGroup>
                     </div>
                   </CardBody>
+                  <div className="usrChangePass">
+                    <Link to="/auth/changepassword"> Change Password </Link>
+                  </div>
                 </Card>
               </Col>
             </Row>

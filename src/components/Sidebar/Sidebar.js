@@ -1,22 +1,14 @@
 /*eslint-disable*/
 import React from "react";
 import { NavLink as NavLinkRRD, Link } from "react-router-dom";
-// nodejs library to set properties for components
 import { PropTypes } from "prop-types";
-
-// reactstrap components
+import ProfileImg from "./../../assets/img/theme/Avatar1.jpg";
 import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
   Collapse,
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,
   DropdownToggle,
-  FormGroup,
   Form,
   Input,
   InputGroupAddon,
@@ -28,8 +20,6 @@ import {
   NavItem,
   NavLink,
   Nav,
-  Progress,
-  Table,
   Container,
   Row,
   Col,
@@ -37,6 +27,8 @@ import {
 import axios from "axios";
 import config from "./../../helpers/config";
 import { authHeader } from "./../../helpers/authHeader";
+import { connect } from "react-redux";
+import { GetUserList } from "../../actions/action";
 
 var ps;
 
@@ -47,6 +39,9 @@ class Sidebar extends React.Component {
   constructor(props) {
     super(props);
     this.activeRoute.bind(this);
+  }
+  componentDidMount() {
+    this.props.FetchUserList();
   }
   // verifies if routeName is the one active (in browser input)
   activeRoute(routeName) {
@@ -162,7 +157,11 @@ class Sidebar extends React.Component {
                   <span className="avatar avatar-sm rounded-circle">
                     <img
                       alt="..."
-                      src={require("assets/img/theme/team-1-800x800.jpg")}
+                      src={
+                        this.props.imgFlag === ""
+                          ? ProfileImg
+                          : this.props.userProfile
+                      }
                     />
                   </span>
                 </Media>
@@ -265,5 +264,18 @@ Sidebar.propTypes = {
     imgAlt: PropTypes.string.isRequired,
   }),
 };
+const mapStatetoProps = (state) => {
+  return {
+    userProfile: state.userProfile,
+  };
+};
 
-export default Sidebar;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    FetchUserList: () => {
+      dispatch(GetUserList());
+    },
+  };
+};
+
+export default connect(mapStatetoProps, mapDispatchToProps)(Sidebar);
